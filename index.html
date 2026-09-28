@@ -37,13 +37,11 @@
     min-height:100vh;
     line-height:1.5;
   }
-  body::before{
-    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4;
-    background-image:
-      linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-    background-size:48px 48px;
-    mask-image:radial-gradient(ellipse 60% 50% at 50% 0%, black 30%, transparent 75%);
+  #matrix-bg{
+    position:fixed;inset:0;z-index:0;pointer-events:none;
+    opacity:.22;
+    mask-image:radial-gradient(ellipse 70% 60% at 50% 0%, black 40%, transparent 85%);
+    -webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 0%, black 40%, transparent 85%);
   }
 
   nav{
@@ -164,6 +162,8 @@
 </style>
 </head>
 <body>
+  <canvas id="matrix-bg"></canvas>
+
   <nav>
     <a href="#stack">Stack</a>
     <a href="#proyectos">Proyectos</a>
@@ -235,6 +235,53 @@
   <div class="toast" id="toast">Email copiado ✓</div>
 
   <script>
+    (function(){
+      var canvas = document.getElementById('matrix-bg');
+      var ctx = canvas.getContext('2d');
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) return;
+
+      var chars = '01</>{}=;()[]#'.split('');
+      var fontSize = 15;
+      var columns, drops;
+      var accentColors = ['rgba(124,140,255,0.85)', 'rgba(34,211,238,0.85)', 'rgba(233,235,241,0.5)'];
+
+      function resize(){
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        columns = Math.floor(canvas.width / fontSize);
+        drops = new Array(columns).fill(0).map(function(){ return Math.random() * -100; });
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      function draw(){
+        ctx.fillStyle = 'rgba(11,13,18,0.08)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.font = fontSize + 'px monospace';
+
+        for (var i = 0; i < columns; i++){
+          var char = chars[Math.floor(Math.random() * chars.length)];
+          ctx.fillStyle = accentColors[Math.floor(Math.random() * accentColors.length)];
+          ctx.fillText(char, i * fontSize, drops[i] * fontSize);
+
+          if (drops[i] * fontSize > canvas.height && Math.random() > 0.975){
+            drops[i] = 0;
+          }
+          drops[i]++;
+        }
+      }
+
+      var running = true;
+      document.addEventListener('visibilitychange', function(){
+        running = !document.hidden;
+      });
+
+      setInterval(function(){
+        if (running) draw();
+      }, 60);
+    })();
+
     document.getElementById('year').textContent = new Date().getFullYear();
 
     document.querySelectorAll('.stack-item').forEach(function(item){
