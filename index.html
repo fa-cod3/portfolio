@@ -85,11 +85,19 @@
 
   .stack{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
   .stack-item{
-    background:var(--card);border:1px solid var(--border);border-radius:12px;
+    width:100%;background:var(--card);border:1px solid var(--border);border-radius:12px;
     padding:16px 12px;text-align:center;font-size:.92rem;font-weight:600;
+    font-family:inherit;color:var(--text);cursor:pointer;appearance:none;-webkit-appearance:none;
     transition:transform .15s ease, border-color .15s ease, background .15s ease;
   }
   .stack-item:hover{transform:translateY(-3px);border-color:var(--accent);background:var(--card-hover);}
+  .stack-item.open{border-color:var(--accent);background:var(--card-hover);}
+  .stack-desc{
+    display:block;max-height:0;overflow:hidden;opacity:0;
+    font-size:.72rem;font-weight:400;color:var(--text-dim);
+    margin-top:0;transition:max-height .25s ease, opacity .2s ease, margin-top .25s ease;
+  }
+  .stack-item.open .stack-desc{max-height:50px;opacity:1;margin-top:8px;}
 
   .projects{display:flex;flex-direction:column;gap:16px;}
   .project{
@@ -179,12 +187,12 @@
     <section id="stack" class="reveal">
       <h2>Stack</h2>
       <div class="stack">
-        <div class="stack-item">⚛️ React</div>
-        <div class="stack-item">🟢 Node.js</div>
-        <div class="stack-item">🗄️ PostgreSQL</div>
-        <div class="stack-item">🎨 Tailwind CSS</div>
-        <div class="stack-item">📱 Responsive</div>
-        <div class="stack-item">🚀 Vercel / AWS</div>
+        <button class="stack-item" type="button">⚛️ React<span class="stack-desc">Hooks, Context API, componentización de UI</span></button>
+        <button class="stack-item" type="button">🟢 Node.js<span class="stack-desc">APIs REST con Express, lógica de backend</span></button>
+        <button class="stack-item" type="button">🗄️ PostgreSQL<span class="stack-desc">Modelado de datos, queries SQL, relaciones</span></button>
+        <button class="stack-item" type="button">🎨 Tailwind CSS<span class="stack-desc">Diseño responsive rápido con utilidades</span></button>
+        <button class="stack-item" type="button">📱 Responsive<span class="stack-desc">Interfaces adaptadas a móvil y escritorio</span></button>
+        <button class="stack-item" type="button">🚀 Vercel / AWS<span class="stack-desc">Despliegues y hosting en la nube</span></button>
       </div>
     </section>
 
@@ -228,6 +236,12 @@
 
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    document.querySelectorAll('.stack-item').forEach(function(item){
+      item.addEventListener('click', function(){
+        item.classList.toggle('open');
+      });
+    });
 
     var emailBtn = document.getElementById('emailBtn');
     var toast = document.getElementById('toast');
