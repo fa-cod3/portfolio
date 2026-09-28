@@ -7,11 +7,15 @@
 <meta name="description" content="FA Code — Full-Stack Developer especializado en React, Node.js y PostgreSQL. Disponible para proyectos freelance.">
 <meta property="og:title" content="FA Code — Full-Stack Developer">
 <meta property="og:description" content="React, Node.js, PostgreSQL. Disponible para proyectos freelance.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>👨‍💻</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#0b0d12;
-    --bg-soft:#11141b;
     --card:#161a23;
+    --card-hover:#1b202c;
     --border:#242938;
     --text:#e9ebf1;
     --text-dim:#9aa2b1;
@@ -22,18 +26,37 @@
   *{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;}
   body{
-    font-family:'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-family:'Inter', system-ui, -apple-system, sans-serif;
     background:
       radial-gradient(circle at 15% 0%, rgba(124,140,255,.18), transparent 45%),
       radial-gradient(circle at 85% 20%, rgba(34,211,238,.14), transparent 40%),
       var(--bg);
+    background-attachment:fixed;
     color:var(--text);
     min-height:100vh;
     line-height:1.5;
   }
-  .wrap{max-width:920px;margin:0 auto;padding:64px 24px 96px;}
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.4;
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+    background-size:48px 48px;
+    mask-image:radial-gradient(ellipse 60% 50% at 50% 0%, black 30%, transparent 75%);
+  }
 
-  header.hero{text-align:center;margin-bottom:56px;}
+  nav{
+    position:sticky;top:0;z-index:10;
+    display:flex;justify-content:center;gap:28px;
+    padding:18px 24px;background:rgba(11,13,18,.72);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  nav a{color:var(--text-dim);text-decoration:none;font-size:.88rem;font-weight:600;transition:color .15s ease;}
+  nav a:hover{color:var(--text);}
+
+  .wrap{max-width:920px;margin:0 auto;padding:64px 24px 96px;position:relative;z-index:1;}
+
+  header.hero{text-align:center;margin-bottom:40px;}
   .avatar{
     width:88px;height:88px;border-radius:50%;
     background:linear-gradient(135deg,var(--accent),var(--accent-2));
@@ -41,34 +64,45 @@
     font-size:36px;margin:0 auto 24px;
     box-shadow:0 0 0 6px rgba(124,140,255,.12);
   }
-  h1{font-size:2.4rem;font-weight:700;letter-spacing:-0.02em;}
-  .subtitle{color:var(--text-dim);font-size:1.05rem;margin-top:8px;}
+  h1{font-size:2.6rem;font-weight:800;letter-spacing:-0.03em;}
+  .subtitle{color:var(--text-dim);font-size:1.05rem;margin-top:10px;}
   .badge{
     display:inline-flex;align-items:center;gap:6px;
-    margin-top:18px;padding:6px 14px;border-radius:999px;
+    margin-top:20px;padding:6px 14px;border-radius:999px;
     background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.25);
     color:var(--accent-2);font-size:.85rem;font-weight:600;
   }
-  .badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 8px var(--accent-2);}
+  .badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 8px var(--accent-2);animation:pulse 2s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
 
-  section{margin-bottom:48px;}
-  h2{font-size:1.05rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:20px;font-weight:600;}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:40px;}
+  .stat{text-align:center;padding:18px 8px;border-radius:12px;border:1px solid var(--border);background:var(--card);}
+  .stat b{display:block;font-size:1.4rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent-2));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .stat span{font-size:.78rem;color:var(--text-dim);}
+
+  section{margin-bottom:48px;scroll-margin-top:80px;}
+  h2{font-size:1.05rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-dim);margin-bottom:20px;font-weight:700;}
 
   .stack{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
   .stack-item{
     background:var(--card);border:1px solid var(--border);border-radius:12px;
     padding:16px 12px;text-align:center;font-size:.92rem;font-weight:600;
-    transition:transform .15s ease, border-color .15s ease;
+    transition:transform .15s ease, border-color .15s ease, background .15s ease;
   }
-  .stack-item:hover{transform:translateY(-3px);border-color:var(--accent);}
+  .stack-item:hover{transform:translateY(-3px);border-color:var(--accent);background:var(--card-hover);}
 
   .projects{display:flex;flex-direction:column;gap:16px;}
   .project{
     background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
-    padding:24px;display:flex;flex-direction:column;gap:10px;
-    transition:border-color .15s ease, transform .15s ease;
+    padding:24px;display:flex;gap:18px;align-items:flex-start;
+    transition:border-color .15s ease, transform .15s ease, background .15s ease;
   }
-  .project:hover{border-color:var(--accent);transform:translateY(-2px);}
+  .project:hover{border-color:var(--accent);transform:translateY(-2px);background:var(--card-hover);}
+  .project-icon{
+    width:44px;height:44px;flex:none;border-radius:10px;display:flex;align-items:center;justify-content:center;
+    background:rgba(124,140,255,.12);font-size:20px;
+  }
+  .project-body{display:flex;flex-direction:column;gap:8px;}
   .project h3{font-size:1.15rem;}
   .project p{color:var(--text-dim);font-size:.95rem;}
   .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px;}
@@ -77,7 +111,7 @@
     background:rgba(124,140,255,.1);color:var(--accent);border:1px solid rgba(124,140,255,.25);
   }
   .project a{
-    align-self:flex-start;margin-top:6px;font-size:.9rem;font-weight:600;
+    align-self:flex-start;margin-top:4px;font-size:.9rem;font-weight:600;
     color:var(--accent-2);text-decoration:none;display:inline-flex;align-items:center;gap:6px;
   }
   .project a:hover{text-decoration:underline;}
@@ -85,7 +119,7 @@
   .links{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;}
   .btn{
     padding:12px 26px;border-radius:10px;text-decoration:none;font-weight:600;font-size:.95rem;
-    border:1px solid var(--border);color:var(--text);transition:all .15s ease;
+    border:1px solid var(--border);color:var(--text);transition:all .15s ease;cursor:pointer;
   }
   .btn:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px);}
   .btn.primary{
@@ -93,24 +127,55 @@
   }
   .btn.primary:hover{color:#0b0d12;filter:brightness(1.08);}
 
+  .toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--card);border:1px solid var(--accent);color:var(--text);
+    padding:10px 20px;border-radius:10px;font-size:.85rem;font-weight:600;
+    opacity:0;transition:opacity .2s ease, transform .2s ease;pointer-events:none;z-index:20;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
   footer{text-align:center;color:var(--text-dim);font-size:.85rem;margin-top:64px;}
+
+  .reveal{opacity:0;transform:translateY(16px);transition:opacity .5s ease, transform .5s ease;}
+  .reveal.in{opacity:1;transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+    .badge::before{animation:none;}
+  }
 
   @media (max-width:600px){
     .stack{grid-template-columns:repeat(2,1fr);}
-    h1{font-size:1.9rem;}
+    .stats{grid-template-columns:repeat(3,1fr);}
+    h1{font-size:2rem;}
+    nav{gap:18px;font-size:.8rem;}
+    .project{flex-direction:column;}
   }
 </style>
 </head>
 <body>
+  <nav>
+    <a href="#stack">Stack</a>
+    <a href="#proyectos">Proyectos</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+
   <div class="wrap">
-    <header class="hero">
+    <header class="hero reveal">
       <div class="avatar">👨‍💻</div>
       <h1>FA Code</h1>
       <p class="subtitle">Full-Stack Developer · React & Node.js · PostgreSQL</p>
       <span class="badge">Disponible para proyectos freelance</span>
+
+      <div class="stats">
+        <div class="stat"><b>3+</b><span>Proyectos públicos</span></div>
+        <div class="stat"><b>100%</b><span>Remoto</span></div>
+        <div class="stat"><b>&lt;24h</b><span>Tiempo de respuesta</span></div>
+      </div>
     </header>
 
-    <section>
+    <section id="stack" class="reveal">
       <h2>Stack</h2>
       <div class="stack">
         <div class="stack-item">⚛️ React</div>
@@ -122,34 +187,70 @@
       </div>
     </section>
 
-    <section>
+    <section id="proyectos" class="reveal">
       <h2>Proyectos</h2>
       <div class="projects">
         <div class="project">
-          <h3>Todo App</h3>
-          <p>Aplicación de gestión de tareas full-stack con persistencia en base de datos y API REST completa.</p>
-          <div class="tags"><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">PostgreSQL</span></div>
-          <a href="https://github.com/fa-cod3/todo-app" target="_blank" rel="noopener">Ver en GitHub →</a>
+          <div class="project-icon">✅</div>
+          <div class="project-body">
+            <h3>Todo App</h3>
+            <p>Aplicación de gestión de tareas full-stack con persistencia en base de datos y API REST completa.</p>
+            <div class="tags"><span class="tag">React</span><span class="tag">Node.js</span><span class="tag">PostgreSQL</span></div>
+            <a href="https://github.com/fa-cod3/todo-app" target="_blank" rel="noopener">Ver en GitHub →</a>
+          </div>
         </div>
         <div class="project">
-          <h3>REST API</h3>
-          <p>API completa con autenticación JWT, CORS y operaciones CRUD sobre PostgreSQL.</p>
-          <div class="tags"><span class="tag">Express.js</span><span class="tag">PostgreSQL</span><span class="tag">JWT</span></div>
-          <a href="https://github.com/fa-cod3/api-rest" target="_blank" rel="noopener">Ver en GitHub →</a>
+          <div class="project-icon">🔌</div>
+          <div class="project-body">
+            <h3>REST API</h3>
+            <p>API completa con autenticación JWT, CORS y operaciones CRUD sobre PostgreSQL.</p>
+            <div class="tags"><span class="tag">Express.js</span><span class="tag">PostgreSQL</span><span class="tag">JWT</span></div>
+            <a href="https://github.com/fa-cod3/api-rest" target="_blank" rel="noopener">Ver en GitHub →</a>
+          </div>
         </div>
       </div>
     </section>
 
-    <section>
+    <section id="contacto" class="reveal">
       <h2>Contacto</h2>
       <div class="links">
         <a href="https://github.com/fa-cod3" class="btn primary" target="_blank" rel="noopener">GitHub</a>
-        <a href="mailto:facod3@gmail.com" class="btn">Email</a>
+        <button class="btn" id="emailBtn">Copiar email</button>
         <a href="https://linkedin.com/in/fa-cod3" class="btn" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </section>
 
-    <footer>© 2026 FA Code — Full-Stack Developer</footer>
+    <footer>© <span id="year"></span> FA Code — Full-Stack Developer</footer>
   </div>
+
+  <div class="toast" id="toast">Email copiado ✓</div>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    var emailBtn = document.getElementById('emailBtn');
+    var toast = document.getElementById('toast');
+    emailBtn.addEventListener('click', function(){
+      navigator.clipboard.writeText('facod3@gmail.com').then(function(){
+        toast.classList.add('show');
+        setTimeout(function(){ toast.classList.remove('show'); }, 1800);
+      });
+    });
+
+    if ('IntersectionObserver' in window){
+      var revealEls = document.querySelectorAll('.reveal');
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting){
+            entry.target.classList.add('in');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      revealEls.forEach(function(el){ io.observe(el); });
+    } else {
+      document.querySelectorAll('.reveal').forEach(function(el){ el.classList.add('in'); });
+    }
+  </script>
 </body>
 </html>
